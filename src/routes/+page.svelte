@@ -7,11 +7,8 @@
         var qrtext = document.getElementById("qrtext").value;
         // if only space use default text
 
-        if (!qrtext) {
-            qrtext = "whelcome to quickQR";
-        }
-        if (qrtext.trim() == "") {
-            qrtext = "whelcome to quickQR";
+        if (!qrtext ||qrtext.trim() == "") {
+            qrtext = "https://quickqr.ronantremoureux.fr/";
         }
 
         var qrcode = document.getElementById("qrcode");
