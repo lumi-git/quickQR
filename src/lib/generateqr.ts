@@ -1,4 +1,4 @@
-import * as qrcode from 'qrcode-generator';
+import qrcode from 'qrcode-generator';
 
 
 export const generateQRMatrix = (text: string) => {
