@@ -39,11 +39,10 @@
         if (value == 1)
             newElement.style.background = "black";
         else        
-            newElement.style.background = "white";
-        
+            newElement.style.background = "";
+
 
         return newElement;
-
 
     }
 
@@ -72,24 +71,35 @@
   </script>
 
 <div class = "text-center">
-    <p class ="text-5xl font-bold text-white my-9 ">Welcome to quickQR</p>
+    <p class ="text-5xl font-bold text-white  mt-9">Welcome to quickQR</p>
 </div>
 
-<div class = "block my-16">
+<div class = "block mb-16">
 
     <div class=" flex text-center">
         <p class=" m-auto sm:text-4xl text-2xl font-bold text-white py-9 ">Enter text to generate QR code</p>
     </div>
 
     <div class=" flex">
-        <input class = "active:scale-110 typingbar shadow-sm shadow-gray-700 mx-auto p-3 text-center placeholder:text-white hover:scale-105 duration-75" type="text" id="qrtext"  placeholder="your text" />
+        <input class = "active:scale-110 typingbar shadow-sm shadow-gray-700 mx-auto p-3 text-center placeholder:text-white hover:placeholder:text-opacity-50 hover:scale-105 duration-75" type="text" id="qrtext"  placeholder="https://.." />
     </div>
 
 </div>
 
 <div class = "flex">
-    <div id=qrcodeHolder class = " px-10 pt-10 pb-5 m-auto bg-white shadow-md shadow-slate-900 rounded-2xl">
-        <div id=animqrcode class = "m-auto  relative hover:scale-[2] duration-200 hover:shadow-sm shadow-gray-700"></div>
-        <a class= "m-auto text-bl font-bold" href = {qrImageUrl} download>Download it here ! </a>
-    </div>
+    <div id=qrcodeHolder class = "bgqrimage p-10 m-auto bg-white shadow-md shadow-slate-900 rounded-2xl">
+
+        <div class = "hover:bg-white bg-transparent duration-[500ms] hover:scale-[2] hover:cursor-none active:scale-[1.90]">
+            <div id=animqrcode class = "m-auto relative duration-200 hover:shadow-sm shadow-gray-700 "></div>
+        </div>
+        
+        </div>
+
 </div>
+
+<div class= flex>
+    <a class= "m-auto text-bl font-bold" href = {qrImageUrl} download>Download it here ! </a>
+
+</div>
+
+
