@@ -1,29 +1,54 @@
-
-<script>
-
+<script lang="ts">
     import { onMount } from 'svelte';
-    import { scale } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
-    function updateQRCode() {
-        
-        var qrtext = document.getElementById("qrtext").value;
-        // if only space use default text
+    import { generateQRMatrix } from '$lib/generateqr';
+  
+    let qrImageUrl = ''; // For the image source
+    let qrMatrix = null; // For the matrix of 0s and 1s
+    
+    let pixels = [];
 
-        if (!qrtext ||qrtext.trim() == "") {
-            qrtext = "https://quickqr.ronantremoureux.fr/";
-        }
+    function QrAnnimation(){
+        qrMatrix.array.forEach(element => {
+            pixels.push(createPixel(element));
+        });
 
-        var qrcode = document.getElementById("qrcode");
-        qrcode.src = "https://quickchart.io/qr?text=" + qrtext;
+        pixels.forEach(element => {
+            document.getElementById("animqrcode").appendChild(element);
+        });
+
     }
 
+    function createPixel(value:Number){
+        var newElement = document.createElement("div");
+        newElement.style.width = "100px";
+        newElement.style.height = "100px";
+        if (value == 1)
+            newElement.style.background = "black";
+        else        
+            newElement.style.background = "red";
+        return newElement;
+
+    }
+
+    function updateQRCode() {
+      let qrtext = document.getElementById('qrtext').value;
+      if (!qrtext.trim()) {
+        qrtext = 'https://quickqr.ronantremoureux.fr/';
+      }
+      
+      // Get the QR Code matrix and data URL
+      const { matrix, qrDataURL } = generateQRMatrix(qrtext);
+      qrMatrix = matrix;
+      qrImageUrl = qrDataURL;
+    }
+  
     onMount(() => {
-        document.getElementById("qrtext").addEventListener("keyup", updateQRCode);
-        updateQRCode();
+      document.getElementById('qrtext').addEventListener('keyup', updateQRCode);
+      updateQRCode();
+      console.log("Here is the matrix of the qr code");
+        console.log(qrMatrix);
     });
-
-
-</script>
+  </script>
 
 <div class = "text-center">
     <p class ="text-5xl font-bold text-white my-9">Welcome to quickQR</p>
@@ -41,5 +66,6 @@
 
 </div>
 
-<img class = "m-auto hover:scale-[2] duration-100" id="qrcode" src="https://quickchart.io/qr?text= " alt="QR Code" />
+<img bind:this={qrImageUrl} class="m-auto hover:scale-[2] duration-100" id="qrcode" src={qrImageUrl} alt="QR Code" />
 
+<div id=animqrcode>qrcode</div>
