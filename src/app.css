@@ -44,7 +44,7 @@ body {
 }
 
 .bgqrimage{
-  background-image: url("RawLogo.png");
+  background-image: url("/static/RawLogo.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
