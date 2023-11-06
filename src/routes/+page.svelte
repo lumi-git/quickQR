@@ -4,34 +4,51 @@
   
     let qrImageUrl = ''; // For the image source
     let qrMatrix = null; // For the matrix of 0s and 1s
-    
-    let pixels = [];
+    var pixelsize = 6;
 
     function QrAnnimation(){
-        qrMatrix.array.forEach(element => {
-            pixels.push(createPixel(element));
-        });
+        // empty the div
+        var animqrcodeDiv:HTMLElement = document.getElementById("animqrcode");
+        animqrcodeDiv.innerHTML = "";
+        //set the size of the div
+        animqrcodeDiv.style.width = qrMatrix[0].length*pixelsize+"px";
+        animqrcodeDiv.style.height = qrMatrix.length*pixelsize+"px";
 
-        pixels.forEach(element => {
-            document.getElementById("animqrcode").appendChild(element);
+        
+        var x = 0;
+        var y = 0;
+        qrMatrix.forEach(element => {
+            element.forEach(element2 => {
+                animqrcodeDiv.appendChild(createPixel(element2,x,y));
+                x++;
+            });
+            x = 0;
+            y++;
         });
-
     }
 
-    function createPixel(value:Number){
+
+    function createPixel(value:any,x:number,y:number){
         var newElement = document.createElement("div");
-        newElement.style.width = "100px";
-        newElement.style.height = "100px";
+        newElement.style.width = pixelsize+"px";
+        newElement.style.height = pixelsize+"px";
+        newElement.style.position = "absolute";
+        newElement.style.left = x*pixelsize+"px";
+        newElement.style.top = y*pixelsize+"px";
+        
         if (value == 1)
             newElement.style.background = "black";
         else        
-            newElement.style.background = "red";
+            newElement.style.background = "white";
+        
+
         return newElement;
+
 
     }
 
-    function updateQRCode() {
-      let qrtext = document.getElementById('qrtext').value;
+    function createQRcode(){
+        let qrtext = document.getElementById('qrtext').value;
       if (!qrtext.trim()) {
         qrtext = 'https://quickqr.ronantremoureux.fr/';
       }
@@ -41,17 +58,21 @@
       qrMatrix = matrix;
       qrImageUrl = qrDataURL;
     }
+
+    function updateQRCode() {
+
+      setTimeout(createQRcode, 0);
+      setTimeout(QrAnnimation, 0);
+    }
   
     onMount(() => {
       document.getElementById('qrtext').addEventListener('keyup', updateQRCode);
       updateQRCode();
-      console.log("Here is the matrix of the qr code");
-        console.log(qrMatrix);
     });
   </script>
 
 <div class = "text-center">
-    <p class ="text-5xl font-bold text-white my-9">Welcome to quickQR</p>
+    <p class ="text-5xl font-bold text-white my-9 ">Welcome to quickQR</p>
 </div>
 
 <div class = "block my-16">
@@ -61,11 +82,14 @@
     </div>
 
     <div class=" flex">
-        <input class = "typingbar  mx-auto p-3 text-center placeholder:text-white hover:scale-105 duration-75" type="text" id="qrtext"  placeholder="your text" />
+        <input class = "active:scale-110 typingbar shadow-sm shadow-gray-700 mx-auto p-3 text-center placeholder:text-white hover:scale-105 duration-75" type="text" id="qrtext"  placeholder="your text" />
     </div>
 
 </div>
 
-<img bind:this={qrImageUrl} class="m-auto hover:scale-[2] duration-100" id="qrcode" src={qrImageUrl} alt="QR Code" />
-
-<div id=animqrcode>qrcode</div>
+<div class = "flex">
+    <div id=qrcodeHolder class = " px-10 pt-10 pb-5 m-auto bg-white shadow-md shadow-slate-900 rounded-2xl">
+        <div id=animqrcode class = "m-auto  relative hover:scale-[2] duration-200 hover:shadow-sm shadow-gray-700"></div>
+        <a class= "m-auto text-bl font-bold" href = {qrImageUrl} download>Download it here ! </a>
+    </div>
+</div>
