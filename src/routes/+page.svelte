@@ -36,10 +36,10 @@
     </div>
 
     <div class=" flex">
-        <input class = "typingbar  mx-auto p-3 text-center placeholder:text-white hover:scale-105" type="text" id="qrtext"  placeholder="your text" />
+        <input class = "typingbar  mx-auto p-3 text-center placeholder:text-white hover:scale-105 duration-75" type="text" id="qrtext"  placeholder="your text" />
     </div>
 
 </div>
 
-<img class = "m-auto hover:scale-[2]" id="qrcode" src="https://quickchart.io/qr?text= " alt="QR Code" />
+<img class = "m-auto hover:scale-[2] duration-100" id="qrcode" src="https://quickchart.io/qr?text= " alt="QR Code" />
 
