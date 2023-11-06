@@ -29,14 +29,12 @@
 
 <div class = "block py-16">
 
-
     <div class=" flex">
-        <p class=" m-auto text-3xl font-bold text-white py-9 ">Enter text to generate QR code</p>
+        <p class=" m-auto text-4xl font-bold text-white py-9 ">Enter text to generate QR code</p>
     </div>
 
     <div class=" flex">
-        <input class = "m-auto p-3 placeholder:text-cyan-900 bg-green-300 text-zinc-500 text-5xl" type="text" id="qrtext"  placeholder="your text" />
-
+        <input class = "m-auto p-3  bg-green-300  text-5xl" type="text" id="qrtext"  placeholder="your text" />
     </div>
 
 </div>
