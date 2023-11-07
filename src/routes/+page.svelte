@@ -3,28 +3,64 @@
     import { generateQRMatrix } from '$lib/generateqr';
   
     let qrImageUrl = ''; // For the image source
-    let qrMatrix = null; // For the matrix of 0s and 1s
+    let qrMatrix:any[] = []; // For the matrix of 0s and 1s
     var pixelsize = 6;
-
+    var elementMatrix:any[] = [];
     function QrAnnimation(){
         // empty the div
         var animqrcodeDiv:HTMLElement = document.getElementById("animqrcode");
-        animqrcodeDiv.innerHTML = "";
         //set the size of the div
+
+        var oldwidth = animqrcodeDiv.style.width;
+        var oldheight = animqrcodeDiv.style.height;
+
         animqrcodeDiv.style.width = qrMatrix[0].length*pixelsize+"px";
         animqrcodeDiv.style.height = qrMatrix.length*pixelsize+"px";
-
-        
+        if (oldwidth != animqrcodeDiv.style.width || oldheight != animqrcodeDiv.style.height){
+            elementMatrix = [];
+            animqrcodeDiv.innerHTML = "";
+        }        
         var x = 0;
         var y = 0;
         qrMatrix.forEach(element => {
+            if (elementMatrix[y] == null)
+                elementMatrix[y] = [];
+
             element.forEach(element2 => {
-                animqrcodeDiv.appendChild(createPixel(element2,x,y));
+                if (elementMatrix[y][x] == null){
+                    var el = createPixel(element2,x,y)
+                    elementMatrix[y].push(el);
+                    animqrcodeDiv.appendChild(el);
+                }
+                else{
+                    modifyPixel(element2,elementMatrix[y][x]);
+                }
                 x++;
             });
             x = 0;
             y++;
         });
+        
+    }
+
+    //here we run any animation we want for the change of the qr code for each pixel
+    function modifyPixel(value, element) {
+    // Define a transition class string using Tailwind CSS classes
+        const transitionClasses = "transition ease-in-out duration-[500ms]";
+        
+        // Apply the transition classes to the element
+        element.className = transitionClasses;
+
+        // Depending on the value, toggle between black and transparent backgrounds
+        if (value == 1) {
+            // Use Tailwind's `bg-black` class for black background
+            element.classList.add('bg-black');
+            element.classList.remove('bg-transparent');
+        } else {
+            // Use Tailwind's `bg-transparent` class for transparent background
+            element.classList.add('bg-transparent');
+            element.classList.remove('bg-black');
+        }
     }
 
 
@@ -36,10 +72,15 @@
         newElement.style.left = x*pixelsize+"px";
         newElement.style.top = y*pixelsize+"px";
         
-        if (value == 1)
-            newElement.style.background = "black";
-        else        
-            newElement.style.background = "";
+        if (value == 1){
+            newElement.classList.remove('bg-transparent');
+            newElement.classList.add('bg-black');
+        }
+        else{
+            newElement.classList.add('bg-transparent');
+            newElement.classList.remove('bg-black');
+
+        }        
 
 
         return newElement;
